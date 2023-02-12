@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -15,13 +16,17 @@ export class User {
   @Column({ unique: true })
   email: string;
   @Column()
+  @Exclude()
   password: string;
   @CreateDateColumn({ name: 'created_at' })
+  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
+  @Exclude()
   updatedAt: Date;
 
   @DeleteDateColumn({ name: 'deleted_at' })
+  @Exclude()
   deletedAt: Date;
 }
