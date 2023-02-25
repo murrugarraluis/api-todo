@@ -1,16 +1,19 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
+import { Task } from '../../tasks/entities/task.entity';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,6 +24,10 @@ export class User {
   @Column()
   @Exclude()
   password: string;
+
+  @OneToMany(() => Task, (task) => task.user)
+  tasks: Task[];
+
   @CreateDateColumn({ name: 'created_at' })
   @Exclude()
   createdAt: Date;
@@ -35,6 +42,10 @@ export class User {
 
   @BeforeInsert()
   async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  @BeforeUpdate()
+  async hashPasswordUpdate() {
     this.password = await bcrypt.hash(this.password, 10);
   }
 }
