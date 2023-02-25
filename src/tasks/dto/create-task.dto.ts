@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -13,6 +14,10 @@ export class CreateTaskDto {
   @IsOptional()
   @IsString()
   description: string;
+
+  @IsOptional()
+  @IsBoolean()
+  done: boolean;
 
   @IsNotEmpty()
   @IsNumber()

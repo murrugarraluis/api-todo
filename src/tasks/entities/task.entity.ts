@@ -19,6 +19,8 @@ export class Task {
   title: string;
   @Column()
   description: string;
+  @Column({ default: false })
+  done: boolean;
 
   @ManyToOne(() => User, (user) => user.tasks, {
     nullable: false,

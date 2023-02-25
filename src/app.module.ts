@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { TasksModule } from './tasks/tasks.module';
+import { AuthModule } from './auth/auth.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -35,9 +36,10 @@ import * as Joi from 'joi';
       }),
       inject: [ConfigService],
     }),
-    UsersModule,
     CommonModule,
+    UsersModule,
     TasksModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,15 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryParamsDto } from '../common/dto/query-params.dto';
 import { UsersService } from '../users/users.service';
 import { QueryTaskParamsDto } from './dto/query-task-params.dto';
 
@@ -31,16 +25,21 @@ export class TasksService {
   }
 
   findAll(query: QueryTaskParamsDto) {
-    const options = {
+    const options: TaskFindOptions = {
       take: query.limit || 100,
       skip: query.offset || 0,
       relations: {
         user: true,
       },
-      where: {},
+      where: {
+        done: false,
+      },
     };
     if (query.userId) {
-      options.where = { user: { id: query.userId } };
+      options.where.user = { id: query.userId };
+      options.relations = {
+        user: false,
+      };
     }
     return this.taskRepository.find(options);
   }
